@@ -24,8 +24,8 @@ $servicios = [
 Route::view('/', 'home')->name('home');
 Route::view('nosotros', 'nosotros')->name('nosotros');
 
-Route::get('servicios', 'App\Http\Controllers\Servicios2Controller@index')->name('servicios');
-Route::resource('servicios', 'App\Http\Controllers\Servicios2Controller')->only('index', 'show');
+Route::get('servicios', 'App\Http\Controllers\Servicios2Controller@index')->name('servicios.index');
+Route::get('servicios/{id}', 'App\Http\Controllers\Servicios2Controller@show')->name('servicios.show');
 #Route::get('servicios', 'App\Http\Controllers\ServiciosController@servicios')->name('servicios');
 //Route::view('servicios', 'servicios',compact('servicios'))->name('servicios');
 Route::view('contacto', 'contacto')->name('contacto');
