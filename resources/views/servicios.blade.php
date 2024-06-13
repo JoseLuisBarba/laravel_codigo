@@ -3,7 +3,14 @@
 @section('title', 'Servicios')
 
 @section('content')
-    <h2>Servicios</h2>
+
+    <tr>
+        <td colspan="4">
+            <a href="{{ route('servicios.create') }}"> Nuevo Servicio</a>
+        </td>
+    </tr>
+
+    <h2>Listado de Servicios</h2>
 
     <tr>
         @if ($servicios)

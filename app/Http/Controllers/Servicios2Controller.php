@@ -27,6 +27,7 @@ class Servicios2Controller extends Controller
     public function create()
     {
         //
+        return view('create');
     }
 
     /**
@@ -38,6 +39,14 @@ class Servicios2Controller extends Controller
     public function store(Request $request)
     {
         //
+        $camposv = request()->validate([
+            'titulo' => 'required',
+            'descripcion' => 'required'
+        ]);
+
+        Servicio::create($camposv);
+
+        return redirect()->route('servicios.index');
     }
 
     /**
