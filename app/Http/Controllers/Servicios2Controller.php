@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Servicio;
+use App\Http\Requests\CreateServicioRequest;
 
 class Servicios2Controller extends Controller
 {
