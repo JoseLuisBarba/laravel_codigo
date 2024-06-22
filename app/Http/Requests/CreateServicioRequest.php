@@ -13,7 +13,7 @@ class CreateServicioRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,8 @@ class CreateServicioRequest extends FormRequest
     {
         return [
             //
+            'titulo' => 'required',
+            'descripcion' => 'required'
         ];
     }
 }

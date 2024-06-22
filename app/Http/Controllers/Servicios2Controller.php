@@ -11,7 +11,6 @@ class Servicios2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -22,13 +21,13 @@ class Servicios2Controller extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
         //
-        return view('create');
+        return view('create', [
+            'servicio' => new Servicio
+        ]);
     }
 
     /**
@@ -54,7 +53,6 @@ class Servicios2Controller extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -66,35 +64,34 @@ class Servicios2Controller extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Servicio $id)
     {
         //
+        return view('edit', [
+            'servicio' => $id
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Servicio $id, CreateServicioRequest $request)
     {
         //
+        $id->update($request->validated());
+        return redirect()->route('servicios.show', $id);
     }
+    
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Servicio $servicio)
     {
         //
+        $servicio->delete();
+        return redirect()->route('servicios.index');
     }
 }
