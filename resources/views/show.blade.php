@@ -14,10 +14,12 @@
         </form>
     </td>
 </tr>
-<!--
 <tr>
-    <td colspan="4">{{ $servicio->created_at->diffForHumans() }}</td>
+    <td colspan="4">{{ $servicio->descripcion }}.</td>
 </tr>
--->
+<tr>
+    <td colspan="4">{{ $servicio->created_at->diffForHumans() }}.</td>
+</tr>
+
 @endsection
 
