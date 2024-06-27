@@ -36,4 +36,5 @@ Route::delete('servicios/{servicio}', 'App\Http\Controllers\Servicios2Controller
 #Route::get('servicios', 'App\Http\Controllers\ServiciosController@servicios')->name('servicios');
 //Route::view('servicios', 'servicios',compact('servicios'))->name('servicios');
 Route::view('contacto', 'contacto')->name('contacto');
+Route::post('contacto', 'App\Http\Controllers\ContactoController@store')->name('contacto.store');
 
