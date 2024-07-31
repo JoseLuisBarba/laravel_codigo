@@ -5,9 +5,11 @@
 @section('content')
 
     <tr>
-        <td colspan="4">
-            <a href="{{ route('servicios.create') }}"> Nuevo Servicio</a>
-        </td>
+        @auth
+            <td colspan="4">
+                <a href="{{ route('servicios.create') }}"> Nuevo Servicio</a>
+            </td>
+        @endauth
     </tr>
 
     <h2>Listado de Servicios</h2>

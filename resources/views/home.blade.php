@@ -1,9 +1,19 @@
 @extends('layout')
 
+@section('title', 'Home')
+
 @section('content')
-    <h2>Home</h2>
-@endsection
 
 
-
-
+<table cellpadding="3" cellspaceing="5">
+    <tr>
+        <th colspan="4">Home</th>
+    </tr>
+    <tr>
+        <td colspan="4">
+            @auth
+                {{ auth()->user()->name }}
+            @endauth
+        </td>
+    </tr>
+</table>

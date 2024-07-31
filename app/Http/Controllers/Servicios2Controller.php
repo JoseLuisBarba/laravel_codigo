@@ -12,6 +12,11 @@ class Servicios2Controller extends Controller
      * Display a listing of the resource.
      *
      */
+    public function __construct() {
+        //$this->middleware('auth')->only('create', 'edit');
+        $this->middleware('auth')->except('index','show');
+    }
+
     public function index()
     {
         //

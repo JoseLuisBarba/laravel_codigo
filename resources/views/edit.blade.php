@@ -7,7 +7,9 @@
 
 <table cellpadding="3" cellspaceing="5">
     <tr>
-        <th colspan="4">Editar Servicio</th>
+        @auth
+            <th colspan="4">Editar Servicio</th>
+        @endauth
     </tr>
     @include('partials.validation-errors')
     <form action="{{ route('servicios.update', $servicio) }}" method="post">

@@ -22,19 +22,32 @@ $servicios = [
 ];
 
 Route::view('/', 'home')->name('home');
+Route::get('/home','App\Http\Controllers\Servicios2Controller@index')->name('home');
+
+
+
 Route::view('nosotros', 'nosotros')->name('nosotros');
 
-Route::get('servicios', 'App\Http\Controllers\Servicios2Controller@index')->name('servicios.index');
-Route::get('servicios/crear', 'App\Http\Controllers\Servicios2Controller@create')->name('servicios.create');
-Route::get('servicios/{id}/editar', 'App\Http\Controllers\Servicios2Controller@edit')->name('servicios.edit');
-Route::patch('servicios/{id}', 'App\Http\Controllers\Servicios2Controller@update')->name('servicios.update');
+Route::resource('servicios', 'App\Http\Controllers\Servicios2Controller')->names('servicios')->middleware('auth');
 
-Route::post('servicios', 'App\Http\Controllers\Servicios2Controller@store')->name('servicios.store');
-Route::get('servicios/{id}', 'App\Http\Controllers\Servicios2Controller@show')->name('servicios.show');
+// Route::get('servicios', 'App\Http\Controllers\Servicios2Controller@index')->name('servicios.index');
+// Route::get('servicios/crear', 'App\Http\Controllers\Servicios2Controller@create')->name('servicios.create');
+// Route::get('servicios/{id}/editar', 'App\Http\Controllers\Servicios2Controller@edit')->name('servicios.edit');
+// Route::patch('servicios/{id}', 'App\Http\Controllers\Servicios2Controller@update')->name('servicios.update');
 
-Route::delete('servicios/{servicio}', 'App\Http\Controllers\Servicios2Controller@destroy')->name('servicios.destroy');
+// Route::post('servicios', 'App\Http\Controllers\Servicios2Controller@store')->name('servicios.store');
+// Route::get('servicios/{id}', 'App\Http\Controllers\Servicios2Controller@show')->name('servicios.show');
+
+// Route::delete('servicios/{servicio}', 'App\Http\Controllers\Servicios2Controller@destroy')->name('servicios.destroy');
+
+
+
 #Route::get('servicios', 'App\Http\Controllers\ServiciosController@servicios')->name('servicios');
 //Route::view('servicios', 'servicios',compact('servicios'))->name('servicios');
 Route::view('contacto', 'contacto')->name('contacto');
 Route::post('contacto', 'App\Http\Controllers\ContactoController@store')->name('contacto.store');
 
+
+Auth::routes(['register' => false]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
