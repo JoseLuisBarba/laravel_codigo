@@ -26,7 +26,21 @@ class CreateServicioRequest extends FormRequest
         return [
             //
             'titulo' => 'required',
-            'descripcion' => 'required'
+            'category_id' => [
+                'requiered', 'exists::categories,id'
+            ],
+            'descripcion' => 'required',
+            'image' => [ $this->route('servicio') ? 'nullable' : 'required','mimes:png,jpg']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'titulo.required' => 'Se necesita un título para el servicio',
+            'category_id.required' => 'Seleccione una categoria para el servicio',
+            'descripcion.required' => 'Ingreso una descripción, es necesario',
+            'image.required' => 'Debes seleccionar una imagen'
         ];
     }
 }

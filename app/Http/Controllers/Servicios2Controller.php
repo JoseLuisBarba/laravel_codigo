@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ServicioSaved;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Servicio;
 use App\Http\Requests\CreateServicioRequest;
+use App\Models\Category;
 
 class Servicios2Controller extends Controller
 {
@@ -21,7 +25,9 @@ class Servicios2Controller extends Controller
     {
         //
         $servicios = Servicio::latest()->paginate(2);
-        return view('servicios', compact('servicios'));
+        return view('servicios', [
+            'servicios' => Servicio::with('category')->latest()->paginate()
+        ]);
     }
 
     /**
@@ -31,7 +37,8 @@ class Servicios2Controller extends Controller
     {
         //
         return view('create', [
-            'servicio' => new Servicio
+            'servicio' => new Servicio,
+            'categories' => Category::pluck('name', 'id') //extraer
         ]);
     }
 
@@ -44,14 +51,18 @@ class Servicios2Controller extends Controller
     public function store(Request $request)
     {
         //
-        $camposv = request()->validate([
-            'titulo' => 'required',
-            'descripcion' => 'required'
-        ]);
 
-        Servicio::create($camposv);
-
-        return redirect()->route('servicios.index');
+        $servicio = new Servicio($request->validated());
+        $servicio->image = $request->file('image')->store('images');
+        $servicio->save();
+        //optimizar la imagen que se ha guardado
+        $image = Image::make(storage::get($servicio->image))
+        ->widen(600)
+        ->limitColors(255)
+        ->encode();
+        Storage::put($servicio->image, (string) $image);
+        ServicioSaved::dispatch($servicio);
+        return redirect()->route('servicios.index')->with('estado', 'El servicio fue creado correctamente');
     }
 
     /**
@@ -74,7 +85,8 @@ class Servicios2Controller extends Controller
     {
         //
         return view('edit', [
-            'servicio' => $id
+            'servicio' => $id,
+            'categories' => Category::pluck('name', 'id') //extraer
         ]);
     }
 
@@ -85,8 +97,25 @@ class Servicios2Controller extends Controller
     public function update(Servicio $id, CreateServicioRequest $request)
     {
         //
-        $id->update($request->validated());
-        return redirect()->route('servicios.show', $id);
+        if($request->hasFile('image')){ // si enviamos una imagen
+            Storage::delete($id->image);
+            $id->fill($request->validated());
+            $id->image = $request->file('image')->store('images');
+            $id->save();
+            //optimizar la imagen que se ha guardado
+            $image = Image::make(storage::get($id->image))
+                ->widen(600)
+                ->limitColors(255)
+                ->encode();
+            //sobreescribir
+            Storage::put($id->image, (string) $image);
+            //Creamos el disparador enviando como parámetro el servicio
+            ServicioSaved::dispatch($id);
+        } else{
+            $id->update( array_filter($request->validated()));
+        }
+        
+        return redirect()->route('servicios.show', $id)->with('estado', 'El servicio fue actualizado correctamente');
     }
     
 
@@ -96,6 +125,7 @@ class Servicios2Controller extends Controller
     public function destroy(Servicio $servicio)
     {
         //
+        Storage::delete($servicio->image);
         $servicio->delete();
         return redirect()->route('servicios.index');
     }
